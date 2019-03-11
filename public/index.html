@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>1660125 - Week 03</title>
+  <style>
+    li.deactive {
+      text-decoration: line-through;
+    }
+    .btn-rm {
+      display: inline-block;
+      padding: 2px;
+      color: white;
+      background-color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <ul data-bind="foreach: todos">
+    <li>
+      <span data-bind="text: text, css: { deactive: !active }, click: $root.toggle.bind(null, id)"></span>
+      <span class="btn-rm" data-bind="click: $root.remove.bind(null, id)">X</span>
+    </li>
+  </ul>
+  <form data-bind="submit: add">
+    <input type="text" id="input" placeholder="Todo text"/>
+    <button type="submit">Add</button>
+  </form>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+  <script>
+    function VM() {
+      let self = this;
+      let $input = document.querySelector('#input');
+      self.todos = ko.observable();
+      
+      self.resolveTodos = function ({ todos }) {
+        console.log(todos);
+        self.todos(todos);
+      }
+
+      // fetch data
+      axios.get('/todos').then(self.resolveTodos);
+
+      self.add = function () {
+        let text = $input.value;
+        fetch({ method: 'PUT', credentials: 'same-origin' })
+          .then(self.resolveTodos);
+        //axios.put('/todos', { text }).then(self.resolveTodos);
+      }
+      
+      self.toggle = function () {
+        aixos.post('/todos?id='+id).then(self.resolveTodos);
+      }
+
+      self.remove = function (id) {
+        axios.delete('/todos?id='+id).then(self.resolveTodos);
+      }
+    }
+    ko.applyBindings(new VM());
+  </script>
+</body>
+</html>
