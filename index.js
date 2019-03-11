@@ -27,10 +27,32 @@ app.use(session({
 app.use(express.static('/public'));
 
 app.get('/', (req, res) => {
+  if (req.session.auth) {
+    res.redirect('/todos');
+  }
+  else {
+    res.render('index');
+  }
+});
+
+app.post('/', (req, res) => {
+  if (req.body.username === config["username"] && req.body.password === config["password"]) {
+    req.session.auth = true;
+    res.redirect('/todos');
+  }
+  else {
+    res.redirect('/');
+  }
+});
+
+app.get('/todos', (req, res) => {
+  if (!req.session.auth){
+    res.redirect('/');
+  }
   if (!req.session.todos) {
     req.session.todos = [];
   }
-  res.render('index', { todos: req.session.todos });
+  res.render('todos', { todos: req.session.todos });
 });
 
 app.post('/todos', (req, res) => {

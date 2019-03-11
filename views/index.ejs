@@ -4,67 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>1660125 - Week 03</title>
-  <style>
-    
-    .deactive {
-      text-decoration: line-through;
-    }
-    .btn-rm {
-      font-family: monospace;
-      cursor: pointer;
-      display: inline-block;
-      margin-left: 5px;
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+  <title>1660125 - Week03</title>
 </head>
 <body>
-  <h2>Todo app</h2>
-  <ul data-bind="foreach: todos">
-    <li>
-      <span style="cursor: pointer" data-bind="text: text, css: { deactive: !active }, click: $root.toggle.bind(null, id)"></span>
-      <span class="btn-rm" data-bind="click: $root.remove.bind(null, id)">X</span>
-    </li>
-  </ul>
-  <form data-bind="submit: add">
-    <input type="text" id="input" placeholder="Todo text"/>
-    <button type="submit">Add</button>
+  <form action="/" method="POST">
+    <table>
+      <tr>
+        <td>Username:</td>
+        <td><input type="text" name="username" /></td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td><input type="password" name="password" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit">Submit</button></td>
+      </tr>
+    </table>
   </form>
-  
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
-  <script>
-    axios.defaults.withCredentials = true;
-
-    function VM() {
-      let self = this;
-      let $input = document.querySelector('#input');
-      self.todos = ko.observable(<%- JSON.stringify(todos) %>);
-      
-      self.resolveTodos = function (res) {
-        console.log(res);
-        self.todos(res.data);
-      }
-
-      self.add = function () {
-        let text = $input.value;
-        if (text.length > 0) {
-          axios.put('/todos', { text }).then(self.resolveTodos);
-        }
-        $input.value = "";
-      }
-      
-      self.toggle = function (id) {
-        axios.post('/todos?id='+id).then(self.resolveTodos);
-      }
-
-      self.remove = function (id) {
-        axios.delete('/todos?id='+id).then(self.resolveTodos);
-      }
-    }
-    ko.applyBindings(new VM());
-  </script>
 </body>
 </html>
