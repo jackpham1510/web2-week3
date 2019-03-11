@@ -48,6 +48,7 @@ app.post('/', (req, res) => {
 app.get('/todos', (req, res) => {
   if (!req.session.auth){
     res.redirect('/');
+    return;
   }
   if (!req.session.todos) {
     req.session.todos = [];
