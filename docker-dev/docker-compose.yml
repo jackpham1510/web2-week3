@@ -4,6 +4,7 @@ services:
     build: .
     command: yarn dev
     restart: always
+    container_name: web2_w3_todoapp
     networks:
       - web
     environment:
@@ -14,7 +15,7 @@ services:
       - "traefik.docker.network=web"
       - "traefik.port=8989"
     volumes:
-      - "./app/:/app/"
+      - "../app/:/app/"
 
 networks:
   web:
