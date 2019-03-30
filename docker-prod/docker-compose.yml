@@ -11,6 +11,7 @@ services:
       - REDIS_URL=redis://redisdb:6379
       - POSTGRES_URL=postgres://postgres:e7105564@postgresdb:5432/web2-week3
     labels:
+      - "traefik.enable=true"
       - "traefik.basic.frontend.rule=Host:web2-week3.phamdung.me"
       - "traefik.docker.network=web"
       - "traefik.port=8989"
