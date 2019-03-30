@@ -9,7 +9,6 @@ app.use(bodyParser.json());
 app.use(express.static('/public'));
 
 app.set('view engine', 'ejs');
-app.set('trust proxy', 1); // session property
 app.use(require('./redis')); // redis-session
 
 app.use(require('./routes/todos')); // Routing
