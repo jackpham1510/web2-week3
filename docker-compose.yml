@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: yarn dev
+    restart: always
+    networks:
+      - web
+    environment:
+      - REDIS_URL=redis://redisdb:6379
+      - POSTGRES_URL=postgres://postgres:e7105564@postgresdb:5432/web2-week3
+    labels:
+      - "traefik.frontend.rule=Host:week3.localhost"
+      - "traefik.docker.network=web"
+      - "traefik.port=8989"
+    volumes:
+      - "./app/:/app/"
+
+networks:
+  web:
+    external: true
